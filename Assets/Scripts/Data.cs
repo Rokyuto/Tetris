@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Can't Create Instances by this structure
-//Data Coordinates
 public static class Data
 {
     public static readonly float cos = Mathf.Cos(Mathf.PI / 2f);
