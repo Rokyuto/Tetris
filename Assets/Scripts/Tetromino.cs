@@ -19,6 +19,10 @@ public struct TetrominoData //Contains all Information aout Shapes
 {
     public Tetromino tetromino; //Termino
     public Tile tile; //Color / Tile
-    public Vector2Int[] cells; //2D Int Vector for creating shapes & store cells || C# Property || Not visible in the Editor
+    public Vector2Int[] cells { get; private set; } //2D Int Vector for creating shapes & store cells || C# Property || Not visible in the Editor
 
+    public void Initialize()
+    {
+        this.cells = Data.Cells[this.tetromino];
+    }
 }

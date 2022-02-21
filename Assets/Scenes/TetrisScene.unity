@@ -579,6 +579,7 @@ GameObject:
   - component: {fileID: 1606159097}
   - component: {fileID: 1606159096}
   - component: {fileID: 1606159098}
+  - component: {fileID: 1606159099}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -628,53 +629,31 @@ MonoBehaviour:
   tetrominoes:
   - tetromino: 0
     tile: {fileID: 11400000, guid: d7d0b15a4654cc84abffbda9968f7692, type: 2}
-    cells:
-    - {x: -1, y: 1}
-    - {x: 0, y: 1}
-    - {x: 1, y: 1}
-    - {x: 2, y: 1}
   - tetromino: 1
     tile: {fileID: 11400000, guid: cc2c68198baf2634ab0da9c665684053, type: 2}
-    cells:
-    - {x: 0, y: 1}
-    - {x: 1, y: 1}
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
   - tetromino: 2
     tile: {fileID: 11400000, guid: 57dc85ab178dc7e40b0fd5382a99476b, type: 2}
-    cells:
-    - {x: 0, y: 1}
-    - {x: -1, y: 0}
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
   - tetromino: 3
     tile: {fileID: 11400000, guid: 176683cb7642c194f86f396a61610b72, type: 2}
-    cells:
-    - {x: -1, y: 1}
-    - {x: -1, y: 0}
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
   - tetromino: 4
     tile: {fileID: 11400000, guid: be5f84428f3165f43989f82cc7ce8c96, type: 2}
-    cells:
-    - {x: 1, y: 1}
-    - {x: -1, y: 0}
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
   - tetromino: 5
     tile: {fileID: 11400000, guid: 34fb43bc400f00b43aac1b2c0b206041, type: 2}
-    cells:
-    - {x: 0, y: 1}
-    - {x: 1, y: 1}
-    - {x: -1, y: 0}
-    - {x: 0, y: 0}
   - tetromino: 6
     tile: {fileID: 11400000, guid: cd64d080895558940a33fd47fb544c1e, type: 2}
-    cells:
-    - {x: -1, y: 1}
-    - {x: 0, y: 1}
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &1606159099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606159095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3536ce2dd564f54a88792196876ea8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1833282346
 GameObject:
   m_ObjectHideFlags: 0
