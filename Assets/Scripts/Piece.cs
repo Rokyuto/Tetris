@@ -12,6 +12,12 @@ public class Piece : MonoBehaviour
     public Vector3Int position { get; private set; }
     public int rotationIndex { get; private set; }
 
+    public float stepDelay = 1f;
+    public float lockDelay = 0.5f;
+
+    private float stepTime;
+    private float lockTime;
+
     public void Initialize(Board board,Vector3Int position,TetrominoData data)
     {
         //On start Settings
@@ -19,6 +25,8 @@ public class Piece : MonoBehaviour
         this.position = position;
         this.data = data;
         this.rotationIndex = 0;
+        this.stepTime = Time.time + this.stepDelay;
+        this.lockTime = 0f;
 
         if(this.cells == null) //If there is not initialized cell
         {
@@ -35,6 +43,8 @@ public class Piece : MonoBehaviour
     private void Update()
     {
         this.board.Clear(this); //Call Clear the Piece from the Board event
+
+        this.lockTime += Time.deltaTime;
 
         // Movement
 
@@ -57,6 +67,12 @@ public class Piece : MonoBehaviour
             HardDrop();
         }
 
+        //Call Auto-movement
+        if (Time.time >= this.stepTime)
+        {
+            Step();
+        }
+
         // Rotation
 
         if(Input.GetKeyDown(KeyCode.Q))
@@ -72,12 +88,34 @@ public class Piece : MonoBehaviour
 
     }
 
+    //Auto-movement
+    private void Step()
+    {
+        this.stepTime = Time.time + this.stepDelay; //Time to move to the next row
+
+        Move(Vector2Int.down); //Move 
+
+        if(this.lockTime >= this.lockDelay)
+        {
+            Lock(); //Spawn NEW Piece
+        }
+    }
+
     private void HardDrop()
     {
         while(Move(Vector2Int.down))
         {
             continue; //Countinue to Move down until the Piece reach the max Bottom available Location
         }
+        Lock(); //Spawn NEW Piece
+    }
+
+    //Spawn NEW Piece
+    private void Lock()
+    {
+        this.board.Set(this);
+        this.board.ClearLines();
+        this.board.SpawnPiece();
     }
 
     private bool Move(Vector2Int translation)
@@ -91,6 +129,7 @@ public class Piece : MonoBehaviour
         if(valid) //If it's valid
         {
             this.position = newPosition; //Apply to Tile the new Position
+            this.lockTime = 0f;
         }
 
         return valid;
@@ -98,15 +137,27 @@ public class Piece : MonoBehaviour
 
     private void Rotate(int direction)
     {
-        this.rotationIndex = Wrap(this.rotationIndex + direction,0,4);
+        int originalRotation = this.rotationIndex;
+        this.rotationIndex = Wrap(this.rotationIndex + direction,0,4); //Rotation Index
 
-        for(int i = 0; i < this.cells.Length;i++)
+        ApplyRotationMatrix(direction); //Rotate 
+
+        if(!TestWallKicks(this.rotationIndex,direction)) //If there is not wall kick (have space for rotation)
+        {
+            this.rotationIndex = originalRotation; //Update Rotation Index
+            ApplyRotationMatrix(-direction);
+        }
+    }
+
+    private void ApplyRotationMatrix(int direction)
+    {
+        for (int i = 0; i < this.cells.Length; i++)
         {
             Vector3 cell = this.cells[i];
 
             int x, y; //New Rotation Coordinates
 
-            switch(this.data.tetromino)
+            switch (this.data.tetromino)
             {
                 case Tetromino.I:
                 case Tetromino.O:
@@ -123,8 +174,37 @@ public class Piece : MonoBehaviour
             }
 
             this.cells[i] = new Vector3Int(x, y, 0);
-
         }
+    }
+
+    private bool TestWallKicks(int rotationIndex, int rotationDirection)
+    {
+        int wallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
+
+        for (int i = 0; i<this.data.wallKicks.GetLength(1); i++)
+        {
+            Vector2Int translation = this.data.wallKicks[wallKickIndex,i];
+
+            if(Move(translation))
+            {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private int GetWallKickIndex(int rotationIndex, int rotationDirection)
+    {
+        int wallKickIndex = rotationIndex * 2;
+
+        if(rotationDirection < 0)
+        {
+            wallKickIndex--;
+        }
+
+        return Wrap(wallKickIndex, 0, this.data.wallKicks.GetLength(0));
     }
 
     private int Wrap(int input, int min, int max)
