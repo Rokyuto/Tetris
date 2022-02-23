@@ -8,7 +8,7 @@ public class Board : MonoBehaviour
     public Tilemap tilemap { get; private set; }
     public Piece activePiece { get; private set; }
     public Vector3Int spawnPosition;
-    public Vector2Int boardSize = new Vector2Int(17, 20);
+    public Vector2Int boardSize = new Vector2Int(10, 20);
 
     public RectInt Bounds
     {
